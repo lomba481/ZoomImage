@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1019658271335",
+    "project_id": "zoomimage-a6dea",
+    "storage_bucket": "zoomimage-a6dea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019658271335:android:a80bea985980309e7772c2",
+        "android_client_info": {
+          "package_name": "com.example.zoomimage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzuFqC9VNV6SVZ5WCajFuIYzRgKkHlWZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
