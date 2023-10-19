@@ -44,6 +44,7 @@ public class Activity3 extends AppCompatActivity {
 
     StorageReference storage;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +85,7 @@ public class Activity3 extends AppCompatActivity {
 
         databaseReference = firebaseDatabase.getReference().child("Lampada");
 
-        bloccoName = findViewById(R.id.NomeBlocco);
-        bloccoDescription = findViewById(R.id.DescrizioneBlocco);
 
-//        blocco = new Blocco();
 
         sendDatabtn = findViewById(R.id.SalvaBtn);
 
@@ -119,8 +117,6 @@ public class Activity3 extends AppCompatActivity {
         viewPager.setImageURI(uri);
     }
     private void addDataFirebase(String name, String description, Uri uri) {
-//        blocco.setBloccoName(name);
-//        blocco.setBloccoDescription(description);
 
 
         StorageReference filepath = storage.child("lampada_immagini").child(uri.getLastPathSegment());

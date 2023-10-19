@@ -11,24 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="210dp">
+        tools:layout_editor_absoluteY="210dp"/>
 
-        <Switch
-            android:id="@+id/switchBtn"
-            android:layout_width="58dp"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="13dp"
-            android:layout_marginBottom="643dp"
-            android:thumbTint="#E91E63"
-            android:trackTint="#FF0057"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-
-    </RelativeLayout>
+    <Switch
+        android:id="@+id/switchBtn"
+        android:layout_width="63dp"
+        android:layout_height="73dp"
+        android:checked="false"
+        android:thumbTint="#E91E63"
+        android:trackTint="#FF0057"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints,UseSwitchCompatOrMaterialXml" />
 
 
 

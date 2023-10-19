@@ -13,9 +13,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+    static FirebaseDatabase firebaseDatabase;
+
+     static DatabaseReference ref;
     Button caricaBtn;
 
     Uri uri;
@@ -24,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ref = firebaseDatabase.getInstance().getReference("Lampada");
 
         caricaBtn = findViewById(R.id.Carica);
         caricaBtn.setOnClickListener(new View.OnClickListener() {
@@ -35,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
     @Override
