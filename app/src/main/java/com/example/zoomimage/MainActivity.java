@@ -18,9 +18,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    static FirebaseDatabase firebaseDatabase;
 
-     static DatabaseReference ref;
+
+    static DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blocco");
+
     Button caricaBtn;
 
     Uri uri;
@@ -29,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ref = firebaseDatabase.getInstance().getReference("Lampada");
-
         caricaBtn = findViewById(R.id.Carica);
         caricaBtn.setOnClickListener(new View.OnClickListener() {
             @Override

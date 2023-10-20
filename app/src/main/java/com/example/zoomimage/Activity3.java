@@ -1,9 +1,12 @@
 package com.example.zoomimage;
 
+import static com.example.zoomimage.MainActivity.ref;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,20 +29,26 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 public class Activity3 extends AppCompatActivity {
 
     EditText bloccoName, bloccoDescription;
+
     Button sendDatabtn;
 
     RelativeLayout pickImagebtn;
 
     ImageView viewPager;
 
-    FirebaseDatabase firebaseDatabase;
-
-    DatabaseReference databaseReference;
 
 
+//    DatabaseReference databaseReference;
+
+
+    String key;
     Uri uri;
 
     StorageReference storage;
@@ -79,13 +88,16 @@ public class Activity3 extends AppCompatActivity {
             }
         });
 
+        key = getIntent().getStringExtra("key");
+        Log.d("chiave", key);
 
-        storage = FirebaseStorage.getInstance().getReference();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+//        storage = FirebaseStorage.getInstance().getReference();
+//        firebaseDatabase = FirebaseDatabase.getInstance();
+//
+//        databaseReference = firebaseDatabase.getReference().child("Lampada");
 
-        databaseReference = firebaseDatabase.getReference().child("Lampada");
-
-
+        bloccoName = findViewById(R.id.NomeBlocco);
+        bloccoDescription= findViewById(R.id.DescrizioneBlocco);
 
         sendDatabtn = findViewById(R.id.SalvaBtn);
 
@@ -95,10 +107,14 @@ public class Activity3 extends AppCompatActivity {
                 String name = bloccoName.getText().toString();
                 String description = bloccoDescription.getText().toString();
 
+
                 if (TextUtils.isEmpty(name) && TextUtils.isEmpty(description)) {
                     Toast.makeText(Activity3.this, "Aggiungi dati.", Toast.LENGTH_SHORT).show();
                 } else {
-                    addDataFirebase(name, description, uri);
+                    Lampada lampada = new Lampada();
+                    lampada.setDescription(description);
+                    lampada.setName(name);
+                    addDataFirebase(lampada, uri, key);
                 }
             }
         });
@@ -116,7 +132,9 @@ public class Activity3 extends AppCompatActivity {
         uri = data.getData();
         viewPager.setImageURI(uri);
     }
-    private void addDataFirebase(String name, String description, Uri uri) {
+
+    private void addDataFirebase(Lampada lampada, Uri uri, String key) {
+
 
 
         StorageReference filepath = storage.child("lampada_immagini").child(uri.getLastPathSegment());
@@ -125,15 +143,20 @@ public class Activity3 extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri download = taskSnapshot.getUploadSessionUri();
+                String image = download.toString();
+                lampada.setImageUri(image);
 
-                DatabaseReference newItem = databaseReference.push();
-                newItem.child("name").setValue(name);
-                newItem.child("description").setValue(description);
-                newItem.child("image").setValue(download.toString());
+
+
+//                DatabaseReference newItem = ref.child(key);
+                ref.child(key).setValue(lampada);
+//                newItem.child("name").setValue(name);
+//                newItem.child("description").setValue(description);
+//                newItem.child("image").setValue(download.toString());
             }
         });
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                databaseReference.setValue(blocco);
@@ -146,6 +169,8 @@ public class Activity3 extends AppCompatActivity {
             }
         });
     }
+
+
 }
 
 

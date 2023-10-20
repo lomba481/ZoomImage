@@ -21,7 +21,7 @@ public class Lampada {
         return description;
     }
 
-    public String getImageUrl() {
+    public String getImageUri() {
         return imageUri;
     }
 
@@ -33,7 +33,7 @@ public class Lampada {
         this.description = description;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUri = imageUrl;
+    public void setImageUri(String imageUrl) {
+        this.imageUri = imageUri;
     }
 }
