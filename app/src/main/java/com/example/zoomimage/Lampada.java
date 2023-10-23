@@ -3,14 +3,14 @@ package com.example.zoomimage;
 public class Lampada {
     private String name;
     private String description;
-    private String imageUri;
+    private String imageUrl;
 
     public Lampada() {}
 
-    public Lampada (String name, String description, String imageUri) {
+    public Lampada (String name, String description, String imageUrl) {
         this.name = name;
         this.description = description;
-        this.imageUri = imageUri;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -21,8 +21,8 @@ public class Lampada {
         return description;
     }
 
-    public String getImageUri() {
-        return imageUri;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public void setName(String name) {
@@ -33,7 +33,7 @@ public class Lampada {
         this.description = description;
     }
 
-    public void setImageUri(String imageUrl) {
-        this.imageUri = imageUri;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

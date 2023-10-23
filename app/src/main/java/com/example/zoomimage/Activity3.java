@@ -29,6 +29,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -36,24 +38,11 @@ import java.util.Objects;
 public class Activity3 extends AppCompatActivity {
 
     EditText bloccoName, bloccoDescription;
-
     Button sendDatabtn;
-
     RelativeLayout pickImagebtn;
-
     ImageView viewPager;
-
-
-
-//    DatabaseReference databaseReference;
-
-
     String key;
     Uri uri;
-
-    StorageReference storage;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,10 +80,6 @@ public class Activity3 extends AppCompatActivity {
         key = getIntent().getStringExtra("key");
         Log.d("chiave", key);
 
-//        storage = FirebaseStorage.getInstance().getReference();
-//        firebaseDatabase = FirebaseDatabase.getInstance();
-//
-//        databaseReference = firebaseDatabase.getReference().child("Lampada");
 
         bloccoName = findViewById(R.id.NomeBlocco);
         bloccoDescription= findViewById(R.id.DescrizioneBlocco);
@@ -114,7 +99,12 @@ public class Activity3 extends AppCompatActivity {
                     Lampada lampada = new Lampada();
                     lampada.setDescription(description);
                     lampada.setName(name);
-                    addDataFirebase(lampada, uri, key);
+
+                    try {
+                        addDataFirebase(lampada, uri, key);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
@@ -133,33 +123,46 @@ public class Activity3 extends AppCompatActivity {
         viewPager.setImageURI(uri);
     }
 
-    private void addDataFirebase(Lampada lampada, Uri uri, String key) {
+    private void addDataFirebase(Lampada lampada, Uri uri, String key) throws FileNotFoundException {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+        StorageReference imageRef = storageReference.child("immagini");
 
+        InputStream stream = getContentResolver().openInputStream(uri);
 
-
-        StorageReference filepath = storage.child("lampada_immagini").child(uri.getLastPathSegment());
-
-        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        UploadTask uploadTask = imageRef.putStream(stream);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri download = taskSnapshot.getUploadSessionUri();
-                String image = download.toString();
-                lampada.setImageUri(image);
+                taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                    String imageUrl = downloadUri.toString();
+                    lampada.setImageUrl(imageUrl);
+                    ref.child(key).setValue(lampada);
+                });
+            }
+        });
 
-
-
+//        filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                Uri download = taskSnapshot.getUploadSessionUri();
+////                String image = download.toString();
+////                lampada.setImageUri(image);
+////                ref.child(key).setValue(lampada);
+//
+//
+//
 //                DatabaseReference newItem = ref.child(key);
-                ref.child(key).setValue(lampada);
+//
 //                newItem.child("name").setValue(name);
 //                newItem.child("description").setValue(description);
 //                newItem.child("image").setValue(download.toString());
-            }
-        });
+//            }
+//        });
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                databaseReference.setValue(blocco);
                 Toast.makeText(Activity3.this, "dati aggiunti", Toast.LENGTH_SHORT).show();
             }
 
